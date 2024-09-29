@@ -1,0 +1,41 @@
+{
+  "name": "bun-hbs",
+  "version": "1.0.0",
+  "description": "Handlebars library for BunJs",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "*.js",
+    "*.d.ts"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["bun", "handlebars", "template"],
+  "author": "AlexY-OS",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexy-os/bun-hbs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alexy-os/bun-hbs/issues"
+  },
+  "homepage": "https://github.com/alexy-os/bun-hbs#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "bun": ">=1.0.0"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "bun": "^1.0.0"
+  }
+}
