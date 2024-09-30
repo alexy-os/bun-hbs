@@ -1,0 +1,42 @@
+# Исходные файлы и директории разработки
+src/
+tests/
+examples/
+
+# Конфигурационные файлы
+.gitignore
+.npmrc
+tsconfig.json
+.eslintrc.json
+.prettierrc
+
+# Файлы документации (кроме README.md)
+docs/
+CONTRIBUTING.md
+CHANGELOG.md
+
+# Логи и временные файлы
+*.log
+.DS_Store
+Thumbs.db
+
+# Директории зависимостей
+node_modules/
+
+# Файлы сборки и кэша
+dist/
+build/
+.cache/
+
+# Файлы среды разработки
+.vscode/
+.idea/
+
+# Файлы тестирования
+coverage/
+.nyc_output/
+
+# Другие файлы, не нужные в продакшене
+.travis.yml
+.gitlab-ci.yml
+appveyor.yml

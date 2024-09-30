@@ -1,49 +1,7 @@
-"use strict";
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.ts
-var src_exports = {};
-__export(src_exports, {
-  clearCache: () => clearCache,
-  initHandlebars: () => initHandlebars,
-  registerHelper: () => registerHelper,
-  render: () => render,
-  setCacheTTL: () => setCacheTTL,
-  setCaching: () => setCaching,
-  setConfig: () => setConfig
-});
-module.exports = __toCommonJS(src_exports);
-
 // src/engine.ts
-var import_handlebars = __toESM(require("handlebars"));
-var import_promises = require("fs/promises");
-var import_path = require("path");
+import Handlebars from "handlebars";
+import { readFile, readdir, stat } from "fs/promises";
+import { join, extname, resolve } from "path";
 
 // src/config.ts
 var CONFIG = {
@@ -57,7 +15,7 @@ function setConfig(newConfig) {
 }
 
 // src/engine.ts
-var hbs = import_handlebars.default.create();
+var hbs = Handlebars.create();
 var templateCache = {};
 var partialCache = {};
 var isCachingEnabled = true;
@@ -76,12 +34,12 @@ function log(message, level = "info") {
   }
 }
 async function safeReadTemplate(templatePath) {
-  const fullPath = (0, import_path.resolve)(CONFIG.VIEWS_DIR, templatePath);
-  if (!fullPath.startsWith((0, import_path.resolve)(CONFIG.VIEWS_DIR))) {
+  const fullPath = resolve(CONFIG.VIEWS_DIR, templatePath);
+  if (!fullPath.startsWith(resolve(CONFIG.VIEWS_DIR))) {
     throw new TemplateError(`Access outside of allowed directory: ${fullPath}`, templatePath);
   }
   try {
-    return await (0, import_promises.readFile)(fullPath, "utf-8");
+    return await readFile(fullPath, "utf-8");
   } catch (error) {
     if (error instanceof Error) {
       throw new TemplateError(`Failed to read template: ${error.message}`, templatePath);
@@ -91,8 +49,8 @@ async function safeReadTemplate(templatePath) {
   }
 }
 async function getTemplate(templatePath) {
-  const fullPath = (0, import_path.resolve)(CONFIG.VIEWS_DIR, templatePath);
-  const { mtimeMs } = await (0, import_promises.stat)(fullPath);
+  const fullPath = resolve(CONFIG.VIEWS_DIR, templatePath);
+  const { mtimeMs } = await stat(fullPath);
   if (isCachingEnabled && templateCache[templatePath]?.mtime === mtimeMs) {
     return templateCache[templatePath].template;
   }
@@ -102,16 +60,16 @@ async function getTemplate(templatePath) {
   return compiledTemplate;
 }
 async function registerPartials(directory) {
-  const files = await (0, import_promises.readdir)(directory, { withFileTypes: true });
+  const files = await readdir(directory, { withFileTypes: true });
   const tasks = files.map(async (file) => {
-    const fullPath = (0, import_path.join)(directory, file.name);
+    const fullPath = join(directory, file.name);
     if (file.isDirectory()) {
       return registerPartials(fullPath);
-    } else if ((0, import_path.extname)(file.name) === ".hbs") {
+    } else if (extname(file.name) === ".hbs") {
       const name = file.name.replace(".hbs", "");
       try {
         const template = await safeReadTemplate(fullPath);
-        const { mtimeMs } = await (0, import_promises.stat)(fullPath);
+        const { mtimeMs } = await stat(fullPath);
         hbs.registerPartial(name, template);
         partialCache[name] = { template, mtime: mtimeMs };
       } catch (err) {
@@ -127,7 +85,7 @@ async function render(template, context = {}, layout) {
     const contentTemplate = await getTemplate(template);
     const content = contentTemplate(context);
     if (layout) {
-      const layoutTemplate = await getTemplate((0, import_path.join)(CONFIG.LAYOUTS_DIR, layout));
+      const layoutTemplate = await getTemplate(join(CONFIG.LAYOUTS_DIR, layout));
       const result = layoutTemplate({ ...context, body: content });
       const renderTime = Date.now() - startTime;
       log(`Template ${template} with layout ${layout} rendered in ${renderTime}ms`, "debug");
@@ -178,8 +136,7 @@ process.on("unhandledRejection", (reason, promise) => {
 process.on("uncaughtException", (err) => {
   log(`Uncaught Exception: ${err.message}`, "error");
 });
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
+export {
   clearCache,
   initHandlebars,
   registerHelper,
@@ -187,4 +144,4 @@ process.on("uncaughtException", (err) => {
   setCacheTTL,
   setCaching,
   setConfig
-});
+};
