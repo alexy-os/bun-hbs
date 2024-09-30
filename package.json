@@ -2,12 +2,13 @@
   "name": "bun-hbs",
   "version": "1.0.0",
   "description": "Handlebars library for BunJs",
-  "main": "index.js",
-  "module": "index.js",
-  "types": "index.d.ts",
+  "main": "bundle.js",
+  "module": "bundle.esm.js",
+  "types": "types/index.d.ts",
   "files": [
     "*.js",
-    "*.d.ts"
+    "*.mjs",
+    "types/*.d.ts"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -29,10 +30,6 @@
   },
   "dependencies": {
     "handlebars": "^4.7.7"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "bun-types": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0",
