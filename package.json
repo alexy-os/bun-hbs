@@ -1,14 +1,14 @@
 {
   "name": "bun-hbs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Handlebars library for BunJs",
   "main": "bundle.js",
   "module": "bundle.esm.js",
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "files": [
     "*.js",
     "*.mjs",
-    "types/*.d.ts"
+    "*.d.ts"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
