@@ -1,6 +1,6 @@
 {
   "name": "bun-hbs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Handlebars library for BunJs",
   "main": "bundle.js",
   "module": "bundle.esm.js",
@@ -13,7 +13,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["bun", "handlebars", "template"],
+  "keywords": [
+    "bun",
+    "handlebars",
+    "template"
+  ],
   "author": "AlexY-OS",
   "license": "MIT",
   "repository": {
