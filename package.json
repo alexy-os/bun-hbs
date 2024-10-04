@@ -1,6 +1,6 @@
 {
   "name": "bun-hbs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Handlebars library for BunJs",
   "main": "bundle.js",
   "module": "bundle.esm.js",
